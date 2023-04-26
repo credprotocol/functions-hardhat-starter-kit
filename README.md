@@ -1,5 +1,6 @@
 # Chainlink Functions Starter Kit
 
+- [Cred Chainlink Functions](#cred-chainlink-functions)
 - [Chainlink Functions Starter Kit](#chainlink-functions-starter-kit)
 - [Overview](#overview)
 - [Quickstart](#quickstart)
@@ -17,6 +18,21 @@
   - [Simulating Requests](#simulating-requests)
   - [Off-chain Secrets](#off-chain-secrets)
 - [Automation Integration](#automation-integration)
+
+# Cred Chainlink Functions
+
+Follow the 'Getting started' section closely to ensure you have the correct environment variables set and do not run into errors later in the process.
+(https://docs.chain.link/chainlink-functions/getting-started)
+
+You do not need to deploy your on-chain resources and manage subscriptions as we have already set it up for Cred customers in advance. 
+
+Chainlink Functions command simulation:
+
+```npx hardhat functions-simulate```
+
+Mumbai function call command:
+
+```npx hardhat functions-request --subid 653 --contract 0x5cB2Dd9F5dCb02B23C52671038069B48c9649B2C --network mumbai```
 
 # Overview
 

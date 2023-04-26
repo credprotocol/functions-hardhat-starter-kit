@@ -1,44 +1,34 @@
-// This example shows how to make call an API using a secret
-// https://coinmarketcap.com/api/documentation/v1/
-
 // Arguments can be provided when a request is initated on-chain and used in the request source code as shown below
-const coinMarketCapCoinId = args[0]
-const currencyCode = args[1]
+const address = args[0]
 
 if (
   !secrets.apiKey ||
-  secrets.apiKey === "Your coinmarketcap API key (get a free one: https://coinmarketcap.com/api/)"
+  secrets.apiKey === "Your Cred API key (get a free one: https://beta.credprotocol.com/)"
 ) {
   throw Error(
-    "COINMARKETCAP_API_KEY environment variable not set for CoinMarketCap API.  Get a free key from https://coinmarketcap.com/api/"
+    "CRED_API_KEY environment variable not set for Cred API.  Get a free key from https://beta.credprotocol.com/"
   )
 }
 
 // build HTTP request object
-
-const coinMarketCapRequest = Functions.makeHttpRequest({
-  url: `https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest`,
-  // Get a free API key from https://coinmarketcap.com/api/
-  headers: { "X-CMC_PRO_API_KEY": secrets.apiKey },
-  params: {
-    convert: currencyCode,
-    id: coinMarketCapCoinId,
+const credRequest = Functions.makeHttpRequest({
+  url: `https://beta.credprotocol.com/api/score/address/`+address+`/`,
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: ' Token ' + secrets.apiKey,
   },
 })
 
 // Make the HTTP request
-const coinMarketCapResponse = await coinMarketCapRequest
+const credResponse = await credRequest
 
-if (coinMarketCapResponse.error) {
-  throw new Error("CoinMarketCap Error")
+if (credResponse.error) {
+  throw new Error("Cred Error: " + credResponse.response.status)
 }
 
-// fetch the price
-const price = coinMarketCapResponse.data.data[coinMarketCapCoinId]["quote"][currencyCode]["price"]
+// fetch the score
+const score = credResponse.data.value
 
-console.log(`Price: ${price.toFixed(2)} ${currencyCode}`)
-
-// price * 100 to move by 2 decimals (Solidity doesn't support decimals)
-// Math.round() to round to the nearest integer
+// Math.round() to round to the nearest integer - in case the return value is a float
 // Functions.encodeUint256() helper function to encode the result from uint256 to bytes
-return Functions.encodeUint256(Math.round(price * 100))
+return Functions.encodeUint256(Math.round(score))

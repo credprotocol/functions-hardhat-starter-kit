@@ -31,11 +31,11 @@ const requestConfig = {
   // string containing the source code to be executed
   source: fs.readFileSync("./Functions-request-source.js").toString(),
   // secrets can be accessed within the source code with `secrets.varName` (ie: secrets.apiKey)
-  secrets: { apiKey: process.env.COINMARKETCAP_API_KEY ?? "" },
+  secrets: { apiKey: process.env.CRED_API_KEY ?? "" },
   // ETH wallet key used to sign secrets so they cannot be accessed by a 3rd party
   walletPrivateKey: process.env["PRIVATE_KEY"],
   // args can be accessed within the source code with `args[index]` (ie: args[0])
-  args: ["1", "USD"],
+  args: ["0x00000000219ab540356cbb839cbe05303d7705fa0123"],
   // expected type of the returned value
   expectedReturnType: ReturnType.uint256,
 }

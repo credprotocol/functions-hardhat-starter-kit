@@ -12,8 +12,8 @@ contract CredTag is ERC721, ERC721URIStorage, Ownable {
   using Strings for uint256;
 
   /* ///////////////////////////////////////////////////////////////
-    VARIABLES
-    ////////////////////////////////////////////////////////////// */
+  VARIABLES
+  ////////////////////////////////////////////////////////////// */
 
   // tokenId counter
   Counters.Counter private _tokenIdCounter;
@@ -40,8 +40,8 @@ contract CredTag is ERC721, ERC721URIStorage, Ownable {
   mapping(uint256 => address) public credTagOwner;
 
   /* ///////////////////////////////////////////////////////////////
-    EVENTS
-    ////////////////////////////////////////////////////////////// */
+  EVENTS
+  ////////////////////////////////////////////////////////////// */
 
   // triggered when a base URI of a token is changed
   event BaseURIChanged(string newBaseURI);
@@ -59,8 +59,8 @@ contract CredTag is ERC721, ERC721URIStorage, Ownable {
   event OracleUpdated(address wallet);
 
   /* ///////////////////////////////////////////////////////////////
-    CONSTRUCTOR
-    ////////////////////////////////////////////////////////////// */
+  CONSTRUCTOR
+  ////////////////////////////////////////////////////////////// */
 
   /**
    * @dev
@@ -73,8 +73,8 @@ contract CredTag is ERC721, ERC721URIStorage, Ownable {
   }
 
   /* ///////////////////////////////////////////////////////////////
-    ACCESS CONTROLLED FUNCTIONS
-    ////////////////////////////////////////////////////////////// */
+  ACCESS CONTROLLED FUNCTIONS
+  ////////////////////////////////////////////////////////////// */
 
   /**
    * @notice Set a base URI that holds metadata of tokens
@@ -129,6 +129,7 @@ contract CredTag is ERC721, ERC721URIStorage, Ownable {
    * @param  score : new Cred score
    */
   function updateCredScore(uint256 score, address wallet) public {
+    require(msg.sender == oracle, "Score can be updated only by oracle");
     require(minted[wallet] == 1, "CredTag not minted");
     credScore[wallet] = score;
     credScoreTimestamp[wallet] = block.timestamp;
@@ -145,11 +146,15 @@ contract CredTag is ERC721, ERC721URIStorage, Ownable {
   }
 
   /* ///////////////////////////////////////////////////////////////
-    SOLIDITY REQUIRED OVERRIDES
-    ////////////////////////////////////////////////////////////// */
+  SOLIDITY REQUIRED OVERRIDES
+  ////////////////////////////////////////////////////////////// */
 
   function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
     super._burn(tokenId);
+  }
+
+  function supportsInterface(bytes4 interfaceId) public view virtual override(ERC721, ERC721URIStorage) returns (bool) {
+    return super.supportsInterface(interfaceId);
   }
 
   function tokenURI(uint256 tokenId) public view override(ERC721, ERC721URIStorage) returns (string memory) {

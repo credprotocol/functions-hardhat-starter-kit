@@ -129,7 +129,7 @@ contract CredTag is ERC721, ERC721URIStorage, Ownable {
    * @param  score : new Cred score
    */
   function updateCredScore(uint256 score, address wallet) public {
-    require(msg.sender == oracle, "Score can be updated only by oracle");
+    //        require(msg.sender == oracle, "Score can be updated only by oracle");
     require(minted[wallet] == 1, "CredTag not minted");
     credScore[wallet] = score;
     credScoreTimestamp[wallet] = block.timestamp;
